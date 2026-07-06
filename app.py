@@ -20,13 +20,26 @@ app.permanent_session_lifetime = timedelta(minutes=5)
 MONGO_URI = os.environ.get('MONGO_URI')
 MONGO_DB_NAME = os.environ.get('MONGO_DB')
 
-# កូដភ្ជាប់ទៅ MongoDB
 MONGO_URI = os.environ.get("MONGO_URI")
 db = None
 
+# ២. ដំណោះស្រាយសម្រាប់ initialize_counters: ត្រូវបង្កើត Function នេះឡើងមកមុនពេលហៅប្រើ
+def initialize_counters():
+    global db
+    if db is not None:
+        try:
+            if "counters" not in db.list_collection_names():
+                db["counters"].insert_one({
+                    "_id": "users",
+                    "seq": 0
+                })
+                print("Created 'counters' collection successfully.")
+        except Exception as e:
+            print(f"Error initializing counters: {e}")
+
+# ផ្នែកតភ្ជាប់ Database
 if MONGO_URI:
     try:
-        # បន្ថែមការកំណត់ច្បាស់លាស់ដើម្បីកុំឲ្យ App គាំង (Crash) នៅលើ Vercel
         mongo_client = MongoClient(
             MONGO_URI,
             serverSelectionTimeoutMS=5000,
@@ -34,34 +47,21 @@ if MONGO_URI:
         )
         db_name = os.environ.get("MONGO_DB", "ឈ្មោះ_database_របស់អ្នក")
         db = mongo_client[db_name]
-    except Exception as e:
-        print(f"MongoDB error: {e}")
         
-def init_db():
-    try:
-        # Create indexes
-        db.users.create_index("username", unique=True)
-        db.posts.create_index("category")
-        db.posts.create_index("date_posted")
-        db.post_images.create_index("post_id")
+        # ហៅប្រើប្រាស់ Function ដែលបានបង្កើតខាងលើ
+        initialize_counters()
+        
     except Exception as e:
-        print(f"Error initializing DB indexes: {e}")
-
-
-# រត់ function ខាងលើដើម្បីបង្កើតវាការពារមុន
-if MONGO_URI:
-    initialize_counters()
-
-# Initialize database indexes
-init_db()
+        print(f"MongoDB connection error: {e}")
 
 def get_next_sequence_value(sequence_name):
-    # ត្រូវប្រាកដថាវាហៅ db.counters មិនមែនហៅអ្វីផ្សេងដែលនាំឲ្យទៅជា NoneType
+    if db is None:
+        raise Exception("Database not connected")
     counter = db.counters.find_one_and_update(
         {'_id': sequence_name},
         {'$inc': {'seq': 1}},
         return_document=pymongo.ReturnDocument.AFTER,
-        upsert=True # ប្រសិនបើមិនទាន់មាន collection 'counters' ឲ្យវារៀបចំបង្កើត auto តែម្តង
+        upsert=True
     )
     return counter['seq']
 

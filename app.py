@@ -46,6 +46,26 @@ def init_db():
     except Exception as e:
         print(f"Error initializing DB indexes: {e}")
 
+
+# កូដសម្រាប់ពិនិត្យ និងបង្កើត Collection 'counters' ពេល App ចាប់ផ្តើមដំណើរការ
+def initialize_counters():
+    # ពិនិត្យមើលថាតើមាន Collection ឈ្មោះ 'counters' ឬនៅ
+    if "counters" not in db.list_collection_names():
+        print("រកមិនឃើញ Collection counters ទេ! កំពុងបង្កើត...")
+        
+        # នេះជាការបង្កើត Collection និងបញ្ចូលទិន្នន័យដំបូងដើម្បីឲ្យវាដឹងថា id ចាប់ផ្តើមពីលេខ 0
+        db["counters"].insert_one({
+            "_id": "userid",  # ឈ្មោះ key សម្រាប់ចំណាំ
+            "seq": 0         # លេខរៀងដំបូង
+        })
+        print("បង្កើត Collection counters រួចរាល់!")
+    else:
+        print("Collection counters មានរួចរាល់ហើយ។")
+
+# រត់ function ខាងលើដើម្បីបង្កើតវាការពារមុន
+if MONGO_URI:
+    initialize_counters()
+
 # Initialize database indexes
 init_db()
 

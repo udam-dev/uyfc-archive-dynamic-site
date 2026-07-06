@@ -166,19 +166,18 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    # ១. ត្រួតពិនិត្យជាមុនសិនថា តើអថេរ db ត្រូវបានបង្កើតឡើង និងភ្ជាប់ទៅ MongoDB ជោគជ័យដែរឬទេ
+    # ប្រសិនបើ db ស្មើ None វានឹងរុញសារកំហុសទៅបង្ហាញលើ UI តាមរយៈ flash() ភ្លាម
     if db is None:
-        print("Error: Database connection is None! Check your Vercel Env Variables.")
-        flash('មានបញ្ហាក្នុងការភ្ជាប់ទៅកាន់ប្រព័ន្ធទិន្នន័យ (Database connection failed)!')
+        flash('ប្រព័ន្ធមិនអាចភ្ជាប់ទៅកាន់ Database បានទេ! សូមពិនិត្យមើល Network Access (0.0.0.0/0) ឬ Environment Variables ក្នុង Vercel។')
         return render_template('register.html')
 
     try:
         user_count = db.users.count_documents({})
     except Exception as e:
-        print(f"Database error checking user count: {e}")
+        print(f"Database error: {e}")
         user_count = 0
     
-    # ប្រសិនបើមាន Admin ម្នាក់រួចហើយ មិនអនុញ្ញាតឲ្យចុះឈ្មោះថែមទេ
+    # បិទការចុះឈ្មោះបើមាន Admin រួចហើយ
     if user_count > 0:
         flash('ការចុះឈ្មោះត្រូវបានបិទ! Registration is disabled.')
         return redirect(url_for('login'))
@@ -194,27 +193,19 @@ def register():
         hashed_password = generate_password_hash(password)
         
         try:
-            # ២. ការពារកំហុសដែលកើតចេញពី function get_next_sequence_value
-            try:
-                user_id = get_next_sequence_value('users')
-            except Exception as seq_err:
-                print(f"Sequence generator error: {seq_err}")
-                # បង្កើត fallback id មួយជាលក្ខណៈ string ក្នុងករណី collection 'counters' មានបញ្ហា
-                user_id = 1 
-                
+            user_id = get_next_sequence_value('users')
             db.users.insert_one({
                 '_id': user_id,
                 'username': username,
                 'password': hashed_password,
                 'role': 'admin'
             })
-            flash('គណនីអ្នកគ្រប់គ្រងត្រូវបានបង្កើត! Admin account created. Please log in.')
+            flash('គណនីអ្នកគ្រប់គ្រងត្រូវបានបង្កើតជោគជ័យ! Admin account created.')
             return redirect(url_for('login'))
             
         except pymongo.errors.DuplicateKeyError:
-            flash('ឈ្មោះអ្នកប្រើមានរួចហើយ! Username already exists!')
+            flash('ឈ្មោះអ្នកប្រើប្រាស់នេះមានរួចហើយ! Username already exists!')
         except Exception as e:
-            # បង្ហាញ Error ឲ្យចំចំណុចដើម្បីស្រួលដឹងមូលហេតុ
             flash(f'មានបញ្ហាក្នុងការចុះឈ្មោះ: {e}')
             
     return render_template('register.html')

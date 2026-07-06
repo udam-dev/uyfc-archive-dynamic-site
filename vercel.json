@@ -1,7 +1,7 @@
 {
   "rewrites": [
     { 
-      "source": "/(admin|login|register|edit)", 
+      "source": "/(.*|admin|login|register|edit)", 
       "destination": "/api/index" 
     }
   ]

@@ -19,8 +19,22 @@ app.permanent_session_lifetime = timedelta(minutes=5)
 # MongoDB connection setup
 MONGO_URI = os.environ.get('MONGO_URI')
 MONGO_DB = os.environ.get('MONGO_DB')
-mongo_client = pymongo.MongoClient(MONGO_URI)
-db = mongo_client[MONGO_DB]
+
+mongo_client = None
+db = None
+
+if MONGO_URI:
+    try:
+        mongo_client = MongoClient(
+            MONGO_URI, 
+            serverSelectionTimeoutMS=5000, # 5 seconds max timeout
+            connectTimeoutMS=5000
+        )
+        db = mongo_client[MONGO_DB] # <-- This is where your code was failing
+    except Exception as e:
+        print(f"Initial MongoDB connection failed: {e}")
+else:
+    print("WARNING: MONGO_URI environment variable is missing!")
 
 def init_db():
     try:

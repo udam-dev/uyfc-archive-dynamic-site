@@ -8,6 +8,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from PIL import Image, ImageOps
 import io
 from dotenv import load_dotenv
+from pymongo import MongoClient
 
 # Load environment variables
 load_dotenv()

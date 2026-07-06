@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&display=swap"
+    rel="stylesheet">
+  <link rel="icon" href="{{ url_for('static', filename='images/UYFC.png') }}">
+  <title>បណ្ណសារស.ស.យ.ក</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+
+<body>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous"
+    src="https://connect.facebook.net/km_KH/sdk.js#xfbml=1&version=v18.0"></script>
+  <header>
+    <nav class="navbar">
+      <div class="navbar-brand"> <a href="/"><img src="{{ url_for('static', filename='images/UYFC.png') }}"
+            alt="Brand Logo" class="logo"></a> </div>
+      <span class="navbar-title">ARCHIVE</span>
+      <div class="navbar-toggle" id="three-dots">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+      <ul class="navbar-links">
+        <li><a id="icon" href="/"><img id="home-icon" src="{{ url_for('static', filename='images/home.png') }}"></a>
+        </li>
+        <li><a id="text-link" href="#about">📝 អំពីយើង</a></li>
+        <li><a id="text-link" href="#contact">☎️ ទំនាក់ទំនង</a></li>
+        <li class="dropdown">
+          <a id="text-link" href="javascript:void(0)" class="dropbtn">📜 បណ្ណសារ &#9662;</a>
+          <div class="dropdown-content">
+            <a href="{{ url_for('culture') }}">វប្បធម៌</a>
+            <a href="{{ url_for('history') }}">ប្រវត្តិសាស្ត្រ</a>
+            <a href="{{ url_for('sports') }}">កីឡា</a>
+            <a href="{{ url_for('education') }}">អប់រំ</a>
+            <a href="{{ url_for('arts') }}">សិល្បៈ</a>
+            <a href="{{ url_for('technology') }}">បច្ចេកវិទ្យា</a>
+            <a href="{{ url_for('foreign_affairs') }}">កិច្ចការបរទេស</a>
+            <a href="{{ url_for('agriculture') }}">កសិកម្ម</a>
+            <a href="{{ url_for('national_events') }}">រួបរួមស្មារតីជាតិ</a>
+          </div>
+        </li>
+      </ul>
+    </nav>
+    <div class="drop-down-menu" id="drop-down-menu" style="margin-top: -2rem;">
+      <ul>
+        <li style="padding: 10px 20px;">
+          <div class="search-container">
+            <input type="text" id="searchInputMobile" placeholder="ស្វែងរក..."
+              onkeyup="if(event.key==='Enter') searchPosts('searchInputMobile')">
+            <button type="button" onclick="searchPosts('searchInputMobile')">&#128269;</button>
+          </div>
+        </li>
+        <li><a href="/">ទំព័រដើម</a></li>
+        <li><a href="#about">អំពីយើង</a></li>
+        <li><a href="#contact">ទំនាក់ទំនង</a></li>
+        <li><a href="{{ url_for('culture') }}">វប្បធម៌</a></li>
+        <li><a href="{{ url_for('history') }}">ប្រវត្តិសាស្ត្រ</a></li>
+        <li><a href="{{ url_for('sports') }}">កីឡា</a></li>
+        <li><a href="{{ url_for('education') }}">អប់រំ</a></li>
+        <li><a href="{{ url_for('arts') }}">សិល្បៈ</a></li>
+        <li><a href="{{ url_for('technology') }}">បច្ចេកវិទ្យា</a></li>
+        <li><a href="{{ url_for('foreign_affairs') }}">កិច្ចការបរទេស</a></li>
+        <li><a href="{{ url_for('agriculture') }}">កសិកម្ម</a></li>
+        <li><a href="{{ url_for('national_events') }}">រួបរួមស្មារតីជាតិ</a></li>
+      </ul>
+    </div>
+  </header>
+  <!-- Slider Section  -->
+  <div class="slider">
+    <div class="slides">
+      <div class="slide"><img src="{{ url_for('static', filename='images/slide1.jpg') }}" alt="Slide 1"></div>
+      <div class="slide"><img src="{{ url_for('static', filename='images/slide2.jpg') }}" alt="Slide 2"></div>
+      <div class="slide"><img src="{{ url_for('static', filename='images/slide3.jpg') }}" alt="Slide 3"></div>
+    </div>
+    <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
+    <button class="next" onclick="moveSlide(1)">&#10095;</button>
+  </div>
+  <main>
+    <div data-aos="zoom-out-up">
+      <section id="home">
+        {% if posts %}
+        {% set last_post = posts[0] %}
+        <div class="Main-content post-card" data-images="{{ last_post.images|join(',') }}"
+          data-date="{{ last_post.date_posted }}" data-link="{{ last_post.direct_link or '' }}">
+          <div class="Main-content-inner">
+            <img src="{{ url_for('get_post_image', post_id=last_post.id) }}"
+              onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/default.jpg') }}';"
+              alt="Post Image" class="content-image">
+            <div class="content-text">
+              <span
+                style="background: #333; color: white; padding: 5px 10px; border-radius: 5px; font-size: 14px; display: inline-block; margin-bottom: 10px;">{{
+                last_post.category }}</span>
+              <span class="post-date" style="color: #444; font-size: 14px; margin-left: 10px; font-weight: normal;">📅
+                {{
+                last_post.date_posted }}</span>
+              <p id="titles">{{ last_post.event_name }}</p>
+              <p id="text">{{ last_post.caption }}</p>
+              <!--{% if last_post.direct_link %}
+              <a href="{{ last_post.direct_link }}" target="_blank"
+                style="display: inline-block; margin-top: 10px; color: #069d31; font-weight: bold;">ទាញយកឯកសារ</a>
+              {% endif %}-->
+            </div>
+          </div>
+        </div>
+        {% else %}
+        <div class="Main-content post-card">
+          <div class="Main-content-inner">
+            <img src="{{ url_for('static', filename='images/UYFC.png') }}" alt="Description of Image"
+              class="content-image">
+            <div class="content-text">
+              <p id="titles">សហភាពសហព័ន្ធយុវជនកម្ពុជា</p>
+              <p id="text">
+                ស.ស.យ.ក រណសិរ្សទូលំទូលាយរបស់យុវជនកម្ពុជា ដែលបន្តសកម្មភាពពីសមាគម យុវជនកម្ពុជា
+                និងសមាគមយុវជនសាមគ្គីសង្គ្រោះជាតិកម្ពុជា
+                ដែលបានបដិសន្ធិនាថ្ងៃទី០២ ខែធ្នូ ឆ្នាំ១៩៧៨។ ស.ស.យ.ក បង្កើតឡើងក្នុងគោលបំណងដូចតទៅ៖
+                ប្រមូលផ្តុំយុវជនគ្រប់ទិសទី ទាំងក្នុង និងក្រៅប្រទេសដោយមិនប្រកាន់ពូជសាសន៍ ពណ៍សម្បុរ ភេទ ភាសា ជំនឿ សាសនា
+                ឋានៈសង្គម
+                និងនិន្នាការនយោបាយ ជាកម្លាំងមហាសាមគ្គី ក្នុងការរួមចំណែកកសាងប្រទេសកម្ពុជាមួយឯករាជ្យ សន្តិភាព សេរីភាព
+                ប្រជាធិបតេយ្យ និងវឌ្ឍនភាសង្គម។
+                តំណាង និងការពារសិទ្ធិ និងផលប្រយោជន៍ដ៏ត្រឹមត្រូវរបស់យុវជនកម្ពុជា ទាំងខាងជីវភាព ស្មារតី និងសង្គម។
+                ទំនាក់ទំនង និងសហការល្អជាមួយអង្គការសង្គម សមាគម និងសហព័ន្ធ
+                ដែលធ្វើសកម្មភាពពាក់ព័ន្ធនឹងយុវជនសំដៅអប់រំលើកទឹកចិត្តយុវជនក្នុងការរៀនសូត្រ ពលកម្ម កំសាន្ត សប្បាយ
+                និងរួមលើកកម្ពស់ការអប់រំ ថែទាំ និងសុខភាពរបស់កុមារ កម្ពុជា។ ទំនាក់ទំនងជាមិត្តភាព
+                និងសហប្រតិបត្តិការទូលំទូលាយជាមួយអង្គការជាតិ អន្តរជាតិ បុគ្គល ប្រជាជន
+                និងយុវជនប្រទេសនានាលើសកលោក ក្នុងការតស៊ូដើម្បី សន្តិភាព ឯករាជ្យ ប្រជាធិបតេយ្យ វឌ្ឍនភាពសង្គម
+                និងអនាគតស្រស់បំព្រងរបស់យុវវ័យ។
+              </p>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </section>
+    </div>
+
+    <div class="Sub-content">
+      {% for post in posts[1:] %}
+      <div data-aos="zoom-out-up">
+        <div class="content post-card" data-images="{{ post.images|join(',') }}" data-date="{{ post.date_posted }}"
+          data-link="{{ post.direct_link or '' }}">
+          <img src="{{ url_for('get_post_image', post_id=post.id) }}"
+            onerror="this.onerror=null;this.src='{{ url_for('static', filename='images/default.jpg') }}';"
+            alt="Post Image" class="content-image">
+          <div class="content-text">
+            <span
+              style="background: #333; color: white; padding: 3px 8px; border-radius: 5px; font-size: 12px; display: inline-block; margin-bottom: 5px;">{{
+              post.category }}</span>
+            <span class="post-date"
+              style="color: #333; font-size: 12px; margin-left: 10px; font-weight: normal;">📅 {{
+              post.date_posted }}</span>
+            <h2 class="htitle">{{ post.event_name }}</h2>
+            <p class="ellipsis-text">{{ post.caption }}</p>
+            <!--{% if post.direct_link %}
+            <a href="{{ post.direct_link }}" target="_blank"
+              style="display: inline-block; margin-top: 5px; color: #069d31; font-weight: bold; font-size: 14px;">ទាញយកឯកសារ</a>
+            {% endif %}-->
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!--<section id="facebook-section">
+      <div class="facebook-posts">
+        <h2>ព័ត៌មានពីហ្វេសប៊ុក</h2>
+        <div class="fb-page" data-href="https://www.facebook.com/uyfccambodia" data-tabs="timeline" data-width="500"
+          data-height="600" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false"
+          data-show-facepile="true">
+          <blockquote cite="https://www.facebook.com/uyfccambodia" class="fb-xfbml-parse-ignore"><a
+              href="https://www.facebook.com/uyfccambodia">Union of Youth Federations of Cambodia</a></blockquote>
+        </div>
+      </div>
+    </section>-->
+
+  </main>
+
+  <div id="post-modal" class="modal" aria-hidden="true">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Close modal">&times;</button>
+      <img id="modal-image" src="" alt="Post image" class="modal-image" style="display:none;">
+      <h2 id="modal-title"></h2>
+      <div id="modal-text"></div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <section id="about">
+        <div class="footer-about">
+          <h2>អំពីយើង</h2>
+          <p><a href="">UYFC Archive គឺជាបណ្ណសារឌីជីថលផ្លូវការ ដែលបង្កើតឡើងក្នុងគោលបំណងប្រមូលផ្ដុំ រក្សាទុក <br>និងចែករំលែករាល់ឯកសារ ស្នាដៃ សកម្មភាព និងសមិទ្ធផលនានារបស់សហភាពសហព័ន្ធយុវជនកម្ពុជា។ 
+          <br>យើងជឿជាក់ថា ការកត់ត្រា និងរក្សាទុកនូវរាល់សកម្មភាពរបស់យុវជននៅថ្ងៃនេះ
+          <br>គឺជាប្រវត្តិសាស្ត្រដ៏មានតម្លៃសម្រាប់យុវជនជំនាន់ក្រោយក្នុងការសិក្សារៀនសូត្រ
+          <br>និងបន្តវប្បធម៌នៃការលះបង់ដើម្បីសង្គមជាតិ។</a></p>
+        </div>
+      </section>
+      <div class="footer-links">
+        <h2>ទំព័រដើម</h2>
+        <ul>
+          <li><a id="icon" href="/"><img id="home-icon" src="{{ url_for('static', filename='images/home.png') }}"></a>
+          </li>
+        </ul>
+      </div>
+      <section id="contact">
+        <div class="footer-social">
+          <h2>បណ្តាញសង្គម</h2>
+          <ul>
+            <li><a href="https://www.facebook.com/uyfccambodia"><img
+                  src="{{ url_for('static', filename='images/facebook.png') }}" alt="Facebook"></a></li>
+            <li><a href="https://www.tiktok.com/@uyfccambodia?lang=en"><img
+                  src="{{ url_for('static', filename='images/tik-tok.png') }}" alt="TikTok"></a></li>
+            <li><a href="#"><img src="{{ url_for('static', filename='images/instagram.png') }}" alt="Instagram"></a>
+            </li>
+            <li><a href="https://t.me/uyfc_news"><img src="{{ url_for('static', filename='images/telegram.png') }}"
+                  alt="Telegram"></a></li>
+            <li><a href="https://www.youtube.com/@unionofyouthfederationcambodia"><img
+                  src="{{ url_for('static', filename='images/youtube.png') }}" alt="YouTube"></a></li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    <hr>
+    <iframe class="map"
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3909.299433104112!2d104.92882130000002!3d11.530364799999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3109512118f57ad5%3A0x46ccd99611eef46!2sThe%20Kampus!5e0!3m2!1skm!2skh!4v1735201034600!5m2!1skm!2skh"
+      width="100%" height="500" style="border: 0;" allowfullscreen="" loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <div class="footer-bottom">
+      <p>&copy;2026 UYFC ARCHIVE. All rights reserved.</p>
+    </div>
+  </footer>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+  <script src="{{ url_for('static', filename='JavaScript/script.js') }}"></script>
+  <script>
+    document.getElementById('three-dots').addEventListener('click', function () {
+      const dropDownMenu = document.getElementById('drop-down-menu');
+      dropDownMenu.classList.toggle('show');
+    });
+
+    function searchPosts(inputId) {
+      let query = document.getElementById(inputId).value.toLowerCase().trim();
+
+      // Smart Date Parsing: Convert DD/MM/YYYY or DD-MM-YYYY to YYYY-MM-DD
+      const dmyRegex = /^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/;
+      const match = query.match(dmyRegex);
+      if (match) {
+        const day = match[1].padStart(2, '0');
+        const month = match[2].padStart(2, '0');
+        const year = match[3];
+        query = `${year}-${month}-${day}`;
+      } else {
+        query = query.replace(/\//g, '-');
+      }
+
+      const posts = document.querySelectorAll('.post-card');
+
+      posts.forEach(post => {
+        const date = (post.getAttribute('data-date') || '').toLowerCase();
+        const targetElement = post.closest('[data-aos]') || post;
+        if (date.includes(query)) {
+          targetElement.style.display = '';
+        } else {
+          targetElement.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&display=swap"
+        rel="stylesheet">
+    <title>ផ្ទាំងគ្រប់គ្រង​ / Admin Dashboard</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/UYFC.png') }}">
+    <style>
+        body {
+            background: rgba(124, 182, 207, 0.8);
+            font-family: "Kantumruy Pro", serif;
+            font-optical-sizing: auto;
+            font-weight: 500;
+            font-style: normal;
+            overflow-x: hidden;
+        }
+
+        .admin-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        h1 {
+            font-size: 30px;
+            font-weight: 800;
+            margin-top: 0;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #38bdf8 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #38bdf8;
+            margin-top: 0;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: rgba(30, 41, 59, 0.4);
+            padding: 16px 24px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logged-in-user {
+            color: #38bdf8;
+            font-weight: 600;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #create-user-btn {
+            background: rgba(111, 239, 68, 0.15);
+            color: #4abb16;
+            border: 1px solid rgba(89, 239, 9, 0.3);
+            padding: 6px 15px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.25s ease;
+
+            display: block;
+            margin-left: auto;
+            margin-right: 5px;
+        }
+
+        #create-user-btn:hover {
+            background: rgba(13, 198, 13, 0.493);
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(32, 82, 4, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .logout-btn {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 8px 18px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.25s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(231, 53, 53, 0.83);
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            transition: color 0.2s ease;
+        }
+
+        .back-btn:hover {
+            color: #38bdf8;
+        }
+
+        .flash-messages {
+            list-style: none;
+            margin: 0 0 30px;
+            padding: 16px 24px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            border-radius: 12px;
+            color: #34d399;
+            font-weight: 600;
+        }
+
+        .flash-messages li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.6);
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 15px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #64748b;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #48f838;
+            background: rgba(15, 23, 42, 0.8);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+            outline: none;
+        }
+
+        select option {
+            background: #1e293b;
+            color: #ffffff;
+        }
+
+        input[type="file"] {
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.4);
+            cursor: pointer;
+        }
+
+        input[type="file"]::file-selector-button {
+            border: none;
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            padding: 8px 16px;
+            border-radius: 8px;
+            margin-right: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background: rgba(56, 189, 248, 0.25);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #2cd34b 0%, #12982f 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 7px rgba(84, 244, 110, 0.809);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 22px rgba(2, 236, 41, 0.843);
+            filter: brightness(1.1);
+        }
+
+        .posts-list {
+            margin-top: 50px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .post-item {
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 24px;
+            margin-bottom: 20px;
+            border-radius: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 20px;
+            transition: all 0.3s ease;
+        }
+
+        /* .post-item:hover {
+            background: rgba(30, 41, 59, 0.55);
+            border-color: rgba(56, 189, 248, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }*/
+
+        .post-category-badge {
+            background: rgba(56, 189, 248, 0.1);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 12px;
+        }
+
+        .post-date-badge {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 12px;
+            margin-left: 8px;
+        }
+
+        .post-item h3 {
+            margin: 0 0 10px;
+            color: #ffffff;
+            font-size: 20px;
+            font-weight: 700;
+            word-break: break-word;
+        }
+
+        .post-item p {
+            margin: 0 0 10px;
+            color: #94a3b8;
+            font-size: 15px;
+            line-height: 1.6;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+            max-width: 700px;
+        }
+
+        .post-images-grid {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .post-images-grid img {
+            width: 100px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .post-images-grid img:hover {
+            transform: scale(1.05);
+        }
+
+        .direct-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+            color: #34d399;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .direct-link-btn:hover {
+            color: #10b981;
+        }
+
+        .post-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .edit-btn {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 8px 18px;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+        }
+
+        .edit-btn:hover {
+            background: rgba(245, 158, 11, 0.3);
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .delete-btn {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 8px 18px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+        }
+
+        .delete-btn:hover {
+            background: rgba(239, 68, 68, 0.3);
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .create-user-section {
+            margin-top: 50px;
+            padding: 35px;
+            background: rgba(30, 41, 59, 0.4);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .create-user-btn {
+            width: auto;
+            padding: 12px 28px;
+            background: linear-gradient(135deg, #2cd34b 0%, #12982f 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 7px rgba(84, 244, 110, 0.809);
+        }
+
+        .create-user-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 22px rgba(2, 236, 41, 0.843);
+            filter: brightness(1.1);
+        }
+
+        /* Smooth scroll fade-in animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .admin-fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .admin-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .admin-container>h1,
+        .admin-container>center {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .user-nav-bar {
+            animation: fadeInUp 0.5s ease-out 0.1s both;
+        }
+
+        .back-btn {
+            animation: fadeInUp 0.5s ease-out 0.15s both;
+        }
+
+        form {
+            animation: fadeInUp 0.5s ease-out 0.2s both;
+        }
+
+        /* User management list styling */
+        .user-list {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .user-item {
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 16px 20px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            transition: all 0.25s ease;
+        }
+
+        .user-item:hover {
+            background: rgba(30, 41, 59, 0.55);
+            border-color: rgba(56, 189, 248, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .user-badge {
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .change-pw-btn {
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+        }
+
+        .change-pw-btn:hover {
+            background: rgba(56, 189, 248, 0.3);
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* Modal styling for changing password */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .modal-content {
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 35px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            animation: modalFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-sizing: border-box;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            color: #94a3b8;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .close-modal:hover {
+            color: #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-container">
+        <section id="admin-header"></section>
+        <center>
+            <h1>ផ្ទាំងគ្រប់គ្រង​ / Admin Dashboard</h1>
+        </center>
+
+        <div class="user-nav-bar">
+            <span class="logged-in-user">👤 Logged in as: {{ session['username'] }} ({% if session['role'] == 'admin' %}Admin{% else %}User{% endif %})</span>
+            {% if session['role'] == 'admin' %}
+            <a id="create-user-btn" href="#create-user">Create User 👤</a>
+            {% endif %}
+            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+        </div>
+
+        <a href="{{ url_for('home') }}" class="back-btn">⬅️ Back to Home</a>
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class="flash-messages">
+            {% for message in messages %}
+            <li>✅ {{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category" name="category" required>
+                    <option value="" disabled selected>Choose Category...</option>
+                    <option value="វប្បធម៌">វប្បធម៌</option>
+                    <option value="ប្រវត្តិសាស្ត្រ">ប្រវត្តិសាស្ត្រ</option>
+                    <option value="កីឡា">កីឡា</option>
+                    <option value="អប់រំ">អប់រំ</option>
+                    <option value="សិល្បៈ">សិល្បៈ</option>
+                    <option value="បច្ចេកវិទ្យា">បច្ចេកវិទ្យា</option>
+                    <option value="កិច្ចការបរទេស">កិច្ចការបរទេស</option>
+                    <option value="កសិកម្ម">កសិកម្ម</option>
+                    <option value="រួបរួមស្មារតីជាតិ">រួបរួមស្មារតីជាតិ</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="event_name">Event Name</label>
+                <input type="text" id="event_name" name="event_name" required placeholder="Enter event name">
+            </div>
+            <div class="form-group">
+                <label for="caption">Caption</label>
+                <textarea id="caption" name="caption" rows="6" required
+                    placeholder="Enter caption description"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="images">Pictures (Choose multiple files)</label>
+                <input type="file" id="images" name="images" accept="image/*" multiple>
+            </div>
+            <div class="form-group">
+                <label for="direct_link">Direct Link (Optional)</label>
+                <input type="url" id="direct_link" name="direct_link" placeholder="https://example.com/document.pdf">
+            </div>
+            <button type="submit" class="submit-btn">Post New Archive</button>
+        </form>
+
+        <div class="posts-list">
+            <h2 style="color: #38bdf8; margin-bottom: 25px;">📚 Existing Posts</h2>
+            {% for post in posts or [] %}
+            <div class="post-item">
+                <div style="flex: 1; min-width: 280px;">
+                    {% if post.images and post.images|length > 0 %}
+                    <div class="post-images-grid">
+                        {% for img in post.images %}
+                        <img src="{{ url_for('get_image', image_id=img.id) }}" alt="Post Image">
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    <span class="post-category-badge">{{ post.category }}</span>
+                    <span class="post-date-badge">📅 {{ post.date_posted }}</span>
+                    <h3>{{ post.event_name }}</h3>
+                    <p>{{ post.caption[:180] }}{% if post.caption|length > 180 %}...{% endif %}</p>
+                    {% if post.direct_link %}
+                    <a href="{{ post.direct_link }}" target="_blank" class="direct-link-btn">🔗 View Document Link</a>
+                    {% endif %}
+                </div>
+                <div class="post-actions">
+                    <a href="{{ url_for('edit_post', post_id=post.id) }}" class="edit-btn">✏️ Edit</a>
+                    <form method="POST" action="{{ url_for('delete_post', post_id=post.id) }}" class="action-form">
+                        <button type="submit" class="delete-btn"
+                            onclick="return confirm('Are you sure you want to delete this post?')">🗑️ Delete</button>
+                    </form>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if session['role'] == 'admin' %}
+        <!-- Create & Manage Users Section -->
+        <section id="create-user">
+            <div class="create-user-section">
+                <h2>👤 Create New User Account</h2>
+                <form method="POST" action="{{ url_for('create_user') }}">
+                    <div class="form-group">
+                        <label for="new_username">New Username</label>
+                        <input type="text" id="new_username" name="username" placeholder="Enter new username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new_password">New Password</label>
+                        <input type="password" id="new_password" name="password" placeholder="Enter new password"
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new_role">User Type / Role</label>
+                        <select id="new_role" name="role" required>
+                            <option value="admin">Admin (Full Control)</option>
+                            <option value="user" selected>User (Staff / Non-Admin)</option>
+                        </select>
+                    </div>
+                    <center><button type="submit" class="create-user-btn">Create Account</button></center>
+                </form>
+            </div>
+
+            <!-- Manage Users List -->
+            <div class="create-user-section" style="margin-top: 30px;">
+                <h2>👥 Manage Existing Accounts</h2>
+                <div class="user-list">
+                    {% for user in users or [] %}
+                    <div class="user-item">
+                        <div class="user-info">
+                            <span>👤 {{ user.username }}</span>
+                            <span class="user-badge" style="background: rgba(147, 51, 234, 0.15); color: #c084fc; border: 1px solid rgba(147, 51, 234, 0.3);">{{ 'Admin' if user.role == 'admin' else 'User' }}</span>
+                            {% if user.username == session['username'] %}
+                            <span class="user-badge">Current User</span>
+                            {% endif %}
+                        </div>
+                        <div class="user-actions">
+                            <!-- Change Password & Role Trigger -->
+                            <button type="button" class="change-pw-btn"
+                                onclick="openChangePasswordModal('{{ user.id }}', '{{ user.username }}', '{{ user.role }}')">⚙️ Edit User</button>
+
+                            <!-- Delete User Form -->
+                            {% if user.username != session['username'] %}
+                            <form method="POST" action="{{ url_for('delete_user', user_id=user.id) }}"
+                                style="display:inline; animation: none; margin: 0; padding: 0;">
+                                <button type="submit" class="delete-btn" style="padding: 8px 16px; font-size: 13px;"
+                                    onclick="return confirm('Are you sure you want to delete account &quot;{{ user.username }}&quot;?')">🗑️
+                                    Delete</button>
+                            </form>
+                            {% else %}
+                            <button class="delete-btn"
+                                style="padding: 8px 16px; font-size: 13px; opacity: 0.5; cursor: not-allowed;" disabled
+                                title="You cannot delete your own account">🗑️ Delete</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <center><a href="#admin-header"
+                    style="color: #fafbfb; position: relative; top: 30px; background-color: #38bdf8; padding: 4px 5px; border-radius: 15px; text-decoration: none;">Go
+                    to TOP</a></center>
+        </section>
+        {% endif %}
+    </div>
+
+    {% if session['role'] == 'admin' %}
+    <!-- Change Password Modal -->
+    <div id="changePasswordModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeChangePasswordModal()">&times;</span>
+            <h2 style="margin-top: 0; color: #38bdf8; font-size: 20px; display: flex; align-items: center; gap: 8px;">⚙️
+                Edit User Account</h2>
+            <p style="color: #94a3b8; font-size: 14px; margin-bottom: 20px;">Editing account: <strong
+                    id="modal-username-display" style="color: #38bdf8;"></strong></p>
+
+            <form id="changePasswordForm" method="POST" action="" style="animation: none; padding: 0;">
+                <div class="form-group">
+                    <label for="modal_new_password">New Password (leave blank to keep current)</label>
+                    <input type="password" id="modal_new_password" name="new_password" placeholder="Enter new password (optional)">
+                </div>
+                <div class="form-group">
+                    <label for="modal_role">User Type / Role</label>
+                    <select id="modal_role" name="role" required>
+                        <option value="admin">Admin (Full Control)</option>
+                        <option value="user">User (Staff / Non-Admin)</option>
+                    </select>
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+                    <button type="button" class="logout-btn"
+                        style="padding: 10px 20px; font-size: 14px; cursor: pointer;"
+                        onclick="closeChangePasswordModal()">Cancel</button>
+                    <button type="submit" class="create-user-btn"
+                        style="padding: 10px 20px; font-size: 14px; width: auto;">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+    <script>
+        {% if session['role'] == 'admin' %}
+        function openChangePasswordModal(userId, username, role) {
+            const modal = document.getElementById('changePasswordModal');
+            const form = document.getElementById('changePasswordForm');
+            const display = document.getElementById('modal-username-display');
+            const roleSelect = document.getElementById('modal_role');
+
+            form.action = `/admin/change_password/${userId}`;
+            display.textContent = username;
+            roleSelect.value = role;
+            modal.style.display = 'flex';
+        }
+
+        function closeChangePasswordModal() {
+            const modal = document.getElementById('changePasswordModal');
+            modal.style.display = 'none';
+            document.getElementById('modal_new_password').value = '';
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function (event) {
+            const modal = document.getElementById('changePasswordModal');
+            if (event.target == modal) {
+                closeChangePasswordModal();
+            }
+        }
+        {% endif %}
+
+            // Inactivity Auto-Logout Tracker (5 Minutes)
+            (function () {
+                const INACTIVITY_TIME = 5 * 60 * 1000; // 5 minutes in milliseconds
+                let timeoutId;
+
+                function startTimer() {
+                    if (timeoutId) clearTimeout(timeoutId);
+                    timeoutId = setTimeout(logoutUser, INACTIVITY_TIME);
+                }
+
+                function resetTimer() {
+                    startTimer();
+                }
+
+                function logoutUser() {
+                    window.location.href = "{{ url_for('logout', reason='inactivity') }}";
+                }
+
+                // Set up event listeners for active user interactions
+                const events = ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart', 'click'];
+                events.forEach(event => {
+                    document.addEventListener(event, resetTimer, true);
+                });
+
+                // Start the initial countdown
+                startTimer();
+            })();
+    </script>
+</body>
+
+</html>

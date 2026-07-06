@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <title>ចូលប្រព័ន្ធ - UYFC Archive Login</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/UYFC.png') }}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "Kantumruy Pro", sans-serif;
+            background: linear-gradient(135deg, #7cb6cf 0%, #3f9fed 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+        }
+        .login-card {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 420px;
+            padding: 40px 30px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        .login-card:hover {
+            transform: translateY(-5px);
+        }
+        .logo {
+            width: 80px;
+            height: auto;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+        }
+        h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #0b2545;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: rgba(11, 37, 69, 0.7);
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #0b2545;
+            margin-bottom: 8px;
+        }
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.85);
+            font-family: inherit;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s;
+        }
+        input:focus {
+            border-color: #3f9fed;
+            background: #fff;
+            box-shadow: 0 0 8px rgba(63, 159, 237, 0.4);
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: #069d31;
+            color: #fff;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(6, 157, 49, 0.3);
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #058329;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(6, 157, 49, 0.4);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 25px;
+            color: #0b2545;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        .back-btn:hover {
+            color: #fff;
+        }
+        .flashes {
+            list-style: none;
+            margin-bottom: 20px;
+            padding: 12px;
+            background: rgba(255, 77, 77, 0.2);
+            border: 1px solid rgba(255, 77, 77, 0.3);
+            border-radius: 10px;
+            color: #d63031;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <img src="{{ url_for('static', filename='images/UYFC.png') }}" alt="UYFC Logo" class="logo">
+        <h2>ប្រព័ន្ធគ្រប់គ្រងបណ្ណសារ</h2>
+        <div class="subtitle">UYFC Archive Admin Portal</div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="flashes">
+                    {% for message in messages %}
+                        <li>⚠️ {{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <div class="form-group">
+                <label for="username">ឈ្មោះអ្នកប្រើប្រាស់ / Username:</label>
+                <input type="text" id="username" name="username" placeholder="Enter username" required autofocus>
+            </div>
+            <div class="form-group">
+                <label for="password">ពាក្យសម្ងាត់ / Password:</label>
+                <input type="password" id="password" name="password" placeholder="Enter password" required>
+            </div>
+            <button type="submit">ចូលប្រព័ន្ធ / Sign In</button>
+        </form>
+        
+        <a href="{{ url_for('home') }}" class="back-btn">⬅️ ត្រឡប់ទៅទំព័រដើម / Back to Home</a>
+    </div>
+</body>
+</html>

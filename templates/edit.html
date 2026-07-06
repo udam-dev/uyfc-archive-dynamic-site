@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,100..700;1,100..700&display=swap"
+        rel="stylesheet">
+    <title>កែប្រែព័ត៌មាន/edit posted</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        body {
+            background: rgba(124, 182, 207, 0.8);
+            font-family: "Kantumruy Pro", serif;
+            font-optical-sizing: auto;
+            font-weight: 500;
+            font-style: normal;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .admin-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        h2 {
+            font-size: 30px;
+            font-weight: 800;
+            margin-top: 0;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #38bdf8 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.6);
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 15px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #48f838;
+            background: rgba(15, 23, 42, 0.8);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+            outline: none;
+        }
+
+        select option {
+            background: #1e293b;
+            color: #ffffff;
+        }
+
+        input[type="file"] {
+            padding: 12px;
+            background: rgba(15, 23, 42, 0.4);
+            cursor: pointer;
+        }
+
+        input[type="file"]::file-selector-button {
+            border: none;
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            padding: 8px 16px;
+            border-radius: 8px;
+            margin-right: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background: rgba(56, 189, 248, 0.25);
+        }
+
+        button {
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #0ec730 0%, #12982f 100%);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.35);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 22px rgba(2, 236, 41, 0.843);
+            filter: brightness(1.1);
+        }
+
+        .current-image {
+            max-width: 160px;
+            height: auto;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            display: block;
+        }
+
+        .delete-img-btn {
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .delete-img-btn:hover {
+            background: rgba(239, 68, 68, 0.35);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #94a3b8;
+            padding: 13px 26px;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 15px;
+            display: inline-block;
+            margin-left: 15px;
+            transition: all 0.25s ease;
+            box-sizing: border-box;
+            vertical-align: middle;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .flash-messages {
+            list-style: none;
+            margin: 0 0 30px;
+            padding: 16px 24px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            border-radius: 12px;
+            color: #34d399;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="admin-container">
+        <center>
+            <h2>កែប្រែព័ត៌មាន / edit posted</h2>
+        </center>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class="flash-messages">
+            {% for message in messages %}
+            <li>✅ {{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="category">Category</label>
+                <select id="category" name="category" required>
+                    <option value="វប្បធម៌" {% if post['category']=='វប្បធម៌' %}selected{% endif %}>វប្បធម៌</option>
+                    <option value="ប្រវត្តិសាស្ត្រ" {% if post['category']=='ប្រវត្តិសាស្ត្រ' %}selected{% endif %}>
+                        ប្រវត្តិសាស្ត្រ</option>
+                    <option value="កីឡា" {% if post['category']=='កីឡា' %}selected{% endif %}>កីឡា</option>
+                    <option value="អប់រំ" {% if post['category']=='អប់រំ' %}selected{% endif %}>អប់រំ</option>
+                    <option value="សិល្បៈ" {% if post['category']=='សិល្បៈ' %}selected{% endif %}>សិល្បៈ</option>
+                    <option value="បច្ចេកវិទ្យា" {% if post['category']=='បច្ចេកវិទ្យា' %}selected{% endif %}>
+                        បច្ចេកវិទ្យា</option>
+                    <option value="កិច្ចការបរទេស" {% if post['category']=='កិច្ចការបរទេស' %}selected{% endif %}>
+                        កិច្ចការបរទេស</option>
+                    <option value="កសិកម្ម" {% if post['category']=='កសិកម្ម' %}selected{% endif %}>កសិកម្ម</option>
+                        <option value="រួបរួមស្មារតីជាតិ" {% if post['category']=='រួបរួមស្មារតីជាតិ' %}selected{% endif %}>
+                            រួបរួមស្មារតីជាតិ</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="images">Add New Pictures</label>
+                {% if post['images'] and post['images']|length > 0 %}
+                <div
+                    style="margin-bottom: 20px; background: rgba(30, 41, 59, 0.4); padding: 20px; border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.05);">
+                    <p
+                        style="margin-top: 0; color: #94a3b8; font-weight: 600; font-size: 14px; text-transform: uppercase;">
+                        Current Pictures:</p>
+                    <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+                        {% for img in post['images'] %}
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <img src="{{ url_for('get_image', image_id=img.id) }}" alt="Current Image"
+                                class="current-image">
+                            <a href="{{ url_for('delete_image', image_id=img.id) }}"
+                                onclick="return confirm('Delete this image?')" class="delete-img-btn">🗑️ Delete
+                                Image</a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+                <input type="file" id="images" name="images" accept="image/*" multiple>
+            </div>
+            <div class="form-group">
+                <label for="event_name">Event Name</label>
+                <input type="text" id="event_name" name="event_name" value="{{ post['event_name'] }}" required
+                    placeholder="Enter event name">
+            </div>
+            <div class="form-group">
+                <label for="caption">Caption</label>
+                <textarea id="caption" name="caption" rows="8" required
+                    placeholder="Enter caption description">{{ post['caption'] }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="direct_link">Direct Link (Optional)</label>
+                <input type="url" id="direct_link" name="direct_link" value="{{ post['direct_link'] or '' }}"
+                    placeholder="https://example.com/document.pdf">
+            </div>
+            <div style="margin-top: 30px; display: flex; justify-content: center; align-items: center;">
+                <button type="submit">Update Post</button>
+                <a href="{{ url_for('admin') }}" class="back-btn">Cancel & Back</a>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

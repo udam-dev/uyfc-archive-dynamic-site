@@ -47,21 +47,6 @@ def init_db():
         print(f"Error initializing DB indexes: {e}")
 
 
-# កូដសម្រាប់ពិនិត្យ និងបង្កើត Collection 'counters' ពេល App ចាប់ផ្តើមដំណើរការ
-def initialize_counters():
-    # ពិនិត្យមើលថាតើមាន Collection ឈ្មោះ 'counters' ឬនៅ
-    if "counters" not in db.list_collection_names():
-        print("រកមិនឃើញ Collection counters ទេ! កំពុងបង្កើត...")
-        
-        # នេះជាការបង្កើត Collection និងបញ្ចូលទិន្នន័យដំបូងដើម្បីឲ្យវាដឹងថា id ចាប់ផ្តើមពីលេខ 0
-        db["counters"].insert_one({
-            "_id": "userid",  # ឈ្មោះ key សម្រាប់ចំណាំ
-            "seq": 0         # លេខរៀងដំបូង
-        })
-        print("បង្កើត Collection counters រួចរាល់!")
-    else:
-        print("Collection counters មានរួចរាល់ហើយ។")
-
 # រត់ function ខាងលើដើម្បីបង្កើតវាការពារមុន
 if MONGO_URI:
     initialize_counters()
@@ -69,15 +54,15 @@ if MONGO_URI:
 # Initialize database indexes
 init_db()
 
-# Auto-increment helper
 def get_next_sequence_value(sequence_name):
-    result = db.counters.find_one_and_update(
+    # ត្រូវប្រាកដថាវាហៅ db.counters មិនមែនហៅអ្វីផ្សេងដែលនាំឲ្យទៅជា NoneType
+    counter = db.counters.find_one_and_update(
         {'_id': sequence_name},
-        {'$inc': {'sequence_value': 1}},
-        upsert=True,
-        return_document=pymongo.ReturnDocument.AFTER
+        {'$inc': {'seq': 1}},
+        return_document=pymongo.ReturnDocument.AFTER,
+        upsert=True # ប្រសិនបើមិនទាន់មាន collection 'counters' ឲ្យវារៀបចំបង្កើត auto តែម្តង
     )
-    return result['sequence_value']
+    return counter['seq']
 
 # Helper for image compression
 def compress_image(image_file, max_size=(1200, 1200), quality=75):
@@ -180,12 +165,19 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
+    # ១. ត្រួតពិនិត្យជាមុនសិនថា តើអថេរ db ត្រូវបានបង្កើតឡើង និងភ្ជាប់ទៅ MongoDB ជោគជ័យដែរឬទេ
+    if db is None:
+        print("Error: Database connection is None! Check your Vercel Env Variables.")
+        flash('មានបញ្ហាក្នុងការភ្ជាប់ទៅកាន់ប្រព័ន្ធទិន្នន័យ (Database connection failed)!')
+        return render_template('register.html')
+
     try:
         user_count = db.users.count_documents({})
     except Exception as e:
         print(f"Database error checking user count: {e}")
         user_count = 0
     
+    # ប្រសិនបើមាន Admin ម្នាក់រួចហើយ មិនអនុញ្ញាតឲ្យចុះឈ្មោះថែមទេ
     if user_count > 0:
         flash('ការចុះឈ្មោះត្រូវបានបិទ! Registration is disabled.')
         return redirect(url_for('login'))
@@ -201,7 +193,14 @@ def register():
         hashed_password = generate_password_hash(password)
         
         try:
-            user_id = get_next_sequence_value('users')
+            # ២. ការពារកំហុសដែលកើតចេញពី function get_next_sequence_value
+            try:
+                user_id = get_next_sequence_value('users')
+            except Exception as seq_err:
+                print(f"Sequence generator error: {seq_err}")
+                # បង្កើត fallback id មួយជាលក្ខណៈ string ក្នុងករណី collection 'counters' មានបញ្ហា
+                user_id = 1 
+                
             db.users.insert_one({
                 '_id': user_id,
                 'username': username,
@@ -210,9 +209,11 @@ def register():
             })
             flash('គណនីអ្នកគ្រប់គ្រងត្រូវបានបង្កើត! Admin account created. Please log in.')
             return redirect(url_for('login'))
+            
         except pymongo.errors.DuplicateKeyError:
             flash('ឈ្មោះអ្នកប្រើមានរួចហើយ! Username already exists!')
         except Exception as e:
+            # បង្ហាញ Error ឲ្យចំចំណុចដើម្បីស្រួលដឹងមូលហេតុ
             flash(f'មានបញ្ហាក្នុងការចុះឈ្មោះ: {e}')
             
     return render_template('register.html')

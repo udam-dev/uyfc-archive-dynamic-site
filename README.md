@@ -1,6 +1,6 @@
 # Flask Blog with Admin Dashboard
 
-This is a Flask application with SQLite database for a blog site with an admin dashboard.
+This is a Flask application with MongoDB database for a blog site with an admin dashboard.
 
 ## Setup
 
@@ -19,11 +19,11 @@ This is a Flask application with SQLite database for a blog site with an admin d
 
 ## Features
 
-- Dynamic blog posts from SQLite database.
+- Dynamic blog posts from MongoDB database.
 - Admin dashboard to add/delete posts with image upload.
 - Glassmorphism UI.
 
 ## Database
 
-- SQLite: `database.db`
+- MongoDB: `database.db`
 - Table: posts (id, title, content, image BLOB, image_filename TEXT, date_posted TEXT)

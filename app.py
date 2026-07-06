@@ -46,7 +46,7 @@ if MONGO_URI:
             serverSelectionTimeoutMS=5000,
             connectTimeoutMS=5000
         )
-        db_name = os.environ.get("MONGO_DB", "ឈ្មោះ_database_របស់អ្នក")
+        db_name = os.environ.get("MONGO_DB", "MYDB")
         db = mongo_client[db_name]
         
         # ហៅប្រើប្រាស់ Function ដែលបានបង្កើតខាងលើ

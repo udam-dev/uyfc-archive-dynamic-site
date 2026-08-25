@@ -611,143 +611,157 @@
             color: #ffffff;
         }
 
-        @media (max-width: 600px) {
+        /* Responsive Styles for Mobile */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+                margin: 0;
+            }
+
             .admin-container {
-                width: calc(100% - 24px);
-                padding: 22px 14px;
+                padding: 20px 15px;
+                margin: 15px;
                 border-radius: 16px;
             }
 
             h1 {
-                font-size: 24px;
-                line-height: 1.35;
-                margin-bottom: 22px;
-            }
-
-            h2 {
-                font-size: 19px;
-                line-height: 1.4;
+                font-size: 22px;
+                margin-bottom: 20px;
             }
 
             .user-nav-bar {
-                align-items: stretch;
                 flex-direction: column;
+                align-items: stretch;
                 gap: 12px;
-                padding: 14px;
-                margin-bottom: 22px;
+                padding: 15px;
             }
-
+            
             .logged-in-user {
-                line-height: 1.5;
-                overflow-wrap: anywhere;
-            }
-
-            #create-user-btn,
-            .logout-btn {
-                display: flex;
-                align-items: center;
                 justify-content: center;
-                width: 100%;
+                margin-bottom: 5px;
+                flex-wrap: wrap;
+                text-align: center;
+            }
+
+            #create-user-btn, .logout-btn {
                 margin: 0;
-                padding: 10px 12px;
-            }
-
-            .back-btn {
-                margin-bottom: 22px;
-            }
-
-            .flash-messages {
-                padding: 12px 14px;
-                margin-bottom: 22px;
-            }
-
-            input,
-            textarea,
-            select {
-                padding: 12px 14px;
-            }
-
-            input[type="file"] {
-                padding: 10px;
-            }
-
-            input[type="file"]::file-selector-button {
-                margin-right: 8px;
-                padding: 7px 10px;
-            }
-
-            .posts-list {
-                margin-top: 36px;
-                padding-top: 28px;
+                width: 100%;
+                text-align: center;
+                box-sizing: border-box;
+                display: flex;
+                justify-content: center;
             }
 
             .post-item {
+                flex-direction: column;
                 padding: 16px;
-                gap: 16px;
+                gap: 15px;
             }
-
+            
             .post-item > div:first-child {
+                min-width: 100% !important;
+            }
+
+            .post-actions {
                 width: 100%;
-                min-width: 0 !important;
+                display: flex;
+                flex-direction: row;
+                gap: 10px;
             }
 
-            .post-item h3 {
-                font-size: 18px;
+            .post-actions .edit-btn {
+                flex: 1;
+                text-align: center;
+                justify-content: center;
             }
 
-            .post-date-badge {
-                margin-left: 0;
-                margin-top: 4px;
+            .post-actions .action-form {
+                flex: 1;
+                display: flex;
             }
-
-            .post-actions,
-            .user-actions {
+            
+            .post-actions .delete-btn {
+                flex: 1;
                 width: 100%;
-                justify-content: stretch;
-            }
-
-            .post-actions > *,
-            .user-actions > *,
-            .user-actions form {
-                flex: 1 1 0;
-                min-width: 0;
-            }
-
-            .edit-btn,
-            .delete-btn,
-            .change-pw-btn {
-                width: 100%;
-                padding: 10px 8px;
-            }
-
-            .post-actions form,
-            .user-actions form {
-                margin: 0;
+                text-align: center;
+                justify-content: center;
             }
 
             .create-user-section {
-                padding: 22px 14px;
-                border-radius: 16px;
+                padding: 20px 15px;
+                margin-top: 30px;
+            }
+            
+            .create-user-btn {
+                width: 100%;
+                box-sizing: border-box;
             }
 
             .user-item {
+                flex-direction: column;
                 align-items: stretch;
-                padding: 14px;
+                padding: 15px;
+                gap: 15px;
             }
-
+            
             .user-info {
+                flex-direction: column;
                 align-items: flex-start;
-                flex-wrap: wrap;
-                line-height: 1.5;
+                gap: 6px;
             }
 
-            .modal {
-                padding: 12px;
+            .user-actions {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                gap: 10px;
+            }
+
+            .user-actions .change-pw-btn {
+                flex: 1;
+                text-align: center;
+                justify-content: center;
+            }
+
+            .user-actions form {
+                flex: 1;
+                display: flex;
+            }
+            
+            .user-actions .delete-btn {
+                flex: 1;
+                width: 100%;
+                text-align: center;
+                justify-content: center;
+                box-sizing: border-box;
             }
 
             .modal-content {
-                padding: 26px 18px 20px;
-                border-radius: 16px;
+                padding: 25px 20px;
+                margin: 15px;
+                width: auto;
+            }
+            
+            .modal-content form > div:last-child {
+                flex-direction: column;
+            }
+            
+            .modal-content form > div:last-child button {
+                width: 100% !important;
+                box-sizing: border-box;
+            }
+            
+            .post-images-grid img {
+                width: 80px;
+                height: 56px;
+            }
+            
+            .flash-messages {
+                padding: 12px 15px;
+            }
+            
+            input, textarea, select {
+                padding: 12px 15px;
             }
         }
     </style>

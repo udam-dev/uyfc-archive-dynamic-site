@@ -635,7 +635,7 @@
                 gap: 12px;
                 padding: 15px;
             }
-            
+
             .logged-in-user {
                 justify-content: center;
                 margin-bottom: 5px;
@@ -643,7 +643,8 @@
                 text-align: center;
             }
 
-            #create-user-btn, .logout-btn {
+            #create-user-btn,
+            .logout-btn {
                 margin: 0;
                 width: 100%;
                 text-align: center;
@@ -657,8 +658,8 @@
                 padding: 16px;
                 gap: 15px;
             }
-            
-            .post-item > div:first-child {
+
+            .post-item>div:first-child {
                 min-width: 100% !important;
             }
 
@@ -679,7 +680,7 @@
                 flex: 1;
                 display: flex;
             }
-            
+
             .post-actions .delete-btn {
                 flex: 1;
                 width: 100%;
@@ -691,7 +692,7 @@
                 padding: 20px 15px;
                 margin-top: 30px;
             }
-            
+
             .create-user-btn {
                 width: 100%;
                 box-sizing: border-box;
@@ -703,7 +704,7 @@
                 padding: 15px;
                 gap: 15px;
             }
-            
+
             .user-info {
                 flex-direction: column;
                 align-items: flex-start;
@@ -727,7 +728,7 @@
                 flex: 1;
                 display: flex;
             }
-            
+
             .user-actions .delete-btn {
                 flex: 1;
                 width: 100%;
@@ -741,34 +742,36 @@
                 margin: 15px;
                 width: auto;
             }
-            
-            .modal-content form > div:last-child {
+
+            .modal-content form>div:last-child {
                 flex-direction: column;
             }
-            
-            .modal-content form > div:last-child button {
+
+            .modal-content form>div:last-child button {
                 width: 100% !important;
                 box-sizing: border-box;
             }
-            
+
             .post-images-grid img {
                 width: 80px;
                 height: 56px;
             }
-            
+
             .flash-messages {
                 padding: 12px 15px;
             }
-            
-            input, textarea, select {
+
+            input,
+            textarea,
+            select {
                 padding: 12px 15px;
             }
         }
-        /* Inside the <style> block */
+
         .flash-messages.error {
             background: rgba(239, 68, 68, 0.1);
             border-color: rgba(239, 68, 68, 0.25);
-            color: #ef4444; /* Red color */
+            color: #ef4444;
         }
     </style>
 </head>
@@ -781,7 +784,8 @@
         </center>
 
         <div class="user-nav-bar">
-            <span class="logged-in-user">👤 Logged in as: {{ session['username'] }} ({% if session['role'] == 'admin' %}Admin{% else %}User{% endif %})</span>
+            <span class="logged-in-user">👤 Logged in as: {{ session['username'] }} ({% if session['role'] == 'admin'
+                %}Admin{% else %}User{% endif %})</span>
             {% if session['role'] == 'admin' %}
             <a id="create-user-btn" href="#create-user">Create User 👤</a>
             {% endif %}
@@ -790,16 +794,16 @@
 
         <a href="{{ url_for('home') }}" class="back-btn">⬅️ Back to Home</a>
 
-        <!-- Inside the HTML body -->
         {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <ul class="flash-messages {% if messages[0][0] == 'error' %}error{% endif %}">
-                    {% for category, message in messages %}
-                        <li>{% if category == 'success' %}✅{% else %}⚠️{% endif %} {{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
+        {% if messages %}
+        <ul class="flash-messages {% if messages[0][0] == 'error' %}error{% endif %}">
+            {% for category, message in messages %}
+            <li>{% if category == 'success' %}✅{% else %}⚠️{% endif %} {{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
         {% endwith %}
+
         <form method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="category">Category</label>
@@ -901,7 +905,9 @@
                     <div class="user-item">
                         <div class="user-info">
                             <span>👤 {{ user.username }}</span>
-                            <span class="user-badge" style="background: rgba(147, 51, 234, 0.15); color: #c084fc; border: 1px solid rgba(147, 51, 234, 0.3);">{{ 'Admin' if user.role == 'admin' else 'User' }}</span>
+                            <span class="user-badge"
+                                style="background: rgba(147, 51, 234, 0.15); color: #c084fc; border: 1px solid rgba(147, 51, 234, 0.3);">{{
+                                'Admin' if user.role == 'admin' else 'User' }}</span>
                             {% if user.username == session['username'] %}
                             <span class="user-badge">Current User</span>
                             {% endif %}
@@ -909,7 +915,8 @@
                         <div class="user-actions">
                             <!-- Change Password & Role Trigger -->
                             <button type="button" class="change-pw-btn"
-                                onclick="openChangePasswordModal('{{ user.id }}', '{{ user.username }}', '{{ user.role }}')">⚙️ Edit User</button>
+                                onclick="openChangePasswordModal('{{ user.id }}', '{{ user.username }}', '{{ user.role }}')">⚙️
+                                Edit User</button>
 
                             <!-- Delete User Form -->
                             {% if user.username != session['username'] %}
@@ -950,7 +957,8 @@
             <form id="changePasswordForm" method="POST" action="" style="animation: none; padding: 0;">
                 <div class="form-group">
                     <label for="modal_new_password">New Password (leave blank to keep current)</label>
-                    <input type="password" id="modal_new_password" name="new_password" placeholder="Enter new password (optional)">
+                    <input type="password" id="modal_new_password" name="new_password"
+                        placeholder="Enter new password (optional)">
                 </div>
                 <div class="form-group">
                     <label for="modal_role">User Type / Role</label>
@@ -1000,44 +1008,47 @@
         }
         {% endif %}
 
-            // Inactivity Auto-Logout Tracker (5 Minutes)
-            (function () {
-                const INACTIVITY_TIME = 5 * 60 * 1000; // 5 minutes in milliseconds
-                let timeoutId;
+        // Inactivity Auto-Logout Tracker (5 Minutes)
+        (function () {
+            const INACTIVITY_TIME = 5 * 60 * 1000; // 5 minutes in milliseconds
+            let timeoutId;
 
-                function startTimer() {
-                    if (timeoutId) clearTimeout(timeoutId);
-                    timeoutId = setTimeout(logoutUser, INACTIVITY_TIME);
-                }
+            function startTimer() {
+                if (timeoutId) clearTimeout(timeoutId);
+                timeoutId = setTimeout(logoutUser, INACTIVITY_TIME);
+            }
 
-                function resetTimer() {
-                    startTimer();
-                }
-
-                function logoutUser() {
-                    window.location.href = "{{ url_for('logout', reason='inactivity') }}";
-                }
-
-                // Set up event listeners for active user interactions
-                const events = ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart', 'click'];
-                events.forEach(event => {
-                    document.addEventListener(event, resetTimer, true);
-                });
-
-                // Start the initial countdown
+            function resetTimer() {
                 startTimer();
-            })();
+            }
+
+            function logoutUser() {
+                window.location.href = "{{ url_for('logout', reason='inactivity') }}";
+            }
+
+            // Set up event listeners for active user interactions
+            const events = ['mousemove', 'mousedown', 'keypress', 'scroll', 'touchstart', 'click'];
+            events.forEach(event => {
+                document.addEventListener(event, resetTimer, true);
+            });
+
+            // Start the initial countdown
+            startTimer();
+        })();
     </script>
+
     <script>
-    // Hide flash messages after 5 seconds
-    setTimeout(function () {
-        var flashes = document.querySelectorAll('.flashes, .flash-messages');
-        flashes.forEach(function (flash) {
-            flash.style.transition = 'opacity 0.5s ease';
-            flash.style.opacity = '0';
-            setTimeout(() => flash.remove(), 500); // Waits for fade out, then removes
-        });
-    }, 5000);
-</script>
+        // Hide flash messages after 5 seconds
+        setTimeout(function () {
+            var flashes = document.querySelectorAll('.flashes, .flash-messages');
+            flashes.forEach(function (flash) {
+                flash.style.transition = 'opacity 0.5s ease';
+                flash.style.opacity = '0';
+                setTimeout(() => flash.remove(), 500);
+            });
+        }, 5000);
+    </script>
 </body>
+
+
 </html>

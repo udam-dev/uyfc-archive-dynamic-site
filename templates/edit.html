@@ -268,6 +268,17 @@
             </div>
         </form>
     </div>
+    <script>
+    // Hide flash messages after 5 seconds
+    setTimeout(function () {
+        var flashes = document.querySelectorAll('.flashes, .flash-messages');
+        flashes.forEach(function (flash) {
+            flash.style.transition = 'opacity 0.5s ease';
+            flash.style.opacity = '0';
+            setTimeout(() => flash.remove(), 500); // Waits for fade out, then removes
+        });
+    }, 5000);
+</script>
 </body>
 
 </html>

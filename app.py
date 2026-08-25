@@ -164,10 +164,10 @@ def login():
             session['user_id'] = user['_id']
             session['username'] = user['username']
             session['role'] = user.get('role', 'admin')
-            flash('បានចូលគណនីដោយជោគជ័យ! Logged in successfully!', 'success')
+            flash('បានចូលគណនីដោយជោគជ័យ!', 'success')
             return redirect(url_for('admin'))
         else:
-            flash('ឈ្មោះអ្នកប្រើ ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវទេ! Invalid username or password!','error')
+            flash('ឈ្មោះអ្នកប្រើ ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវទេ!','error')
             
     return render_template('login.html')
 
@@ -222,9 +222,9 @@ def logout():
     reason = request.args.get('reason')
     session.clear()
     if reason == 'inactivity':
-        flash('លោកអ្នកត្រូវបានចាកចេញដោយសារគ្មានសកម្មភាព! You have been logged out due to inactivity!')
+        flash('លោកអ្នកត្រូវបានចាកចេញដោយសារគ្មានសកម្មភាព!')
     else:
-        flash('បានចាកចេញពីគណនីដោយជោគជ័យ! Logged out successfully!', 'success')
+        flash('បានចាកចេញពីគណនីដោយជោគជ័យ!', 'success')
     return redirect(url_for('login'))
 
 @app.route('/admin', methods=['GET', 'POST'])
@@ -503,7 +503,7 @@ def foreign_affairs():
 
 @app.route('/agriculture')
 def agriculture():
-    return render_template('agriculture.html', posts=get_category_posts('កសសិកម្ម'))
+    return render_template('agriculture.html', posts=get_category_posts('កសិកម្ម'))
 
 @app.route('/national-events')
 def national_events():

@@ -164,10 +164,10 @@ def login():
             session['user_id'] = user['_id']
             session['username'] = user['username']
             session['role'] = user.get('role', 'admin')
-            flash('បានចូលគណនីដោយជោគជ័យ! Logged in successfully!')
+            flash('បានចូលគណនីដោយជោគជ័យ! Logged in successfully!', 'success')
             return redirect(url_for('admin'))
         else:
-            flash('ឈ្មោះអ្នកប្រើ ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវទេ! Invalid username or password!')
+            flash('ឈ្មោះអ្នកប្រើ ឬពាក្យសម្ងាត់មិនត្រឹមត្រូវទេ! Invalid username or password!','error')
             
     return render_template('login.html')
 
@@ -175,7 +175,7 @@ def login():
 def register():
     # ប្រសិនបើ db ស្មើ None វានឹងរុញសារកំហុសទៅបង្ហាញលើ UI តាមរយៈ flash() ភ្លាម
     if db is None:
-        flash('ប្រព័ន្ធមិនអាចភ្ជាប់ទៅកាន់ Database បានទេ! សូមពិនិត្យមើល Network Access (0.0.0.0/0) ឬ Environment Variables ក្នុង Vercel។')
+        flash('ប្រព័ន្ធមិនអាចភ្ជាប់ទៅកាន់ Database បានទេ! សូមពិនិត្យមើល Network Access (0.0.0.0/0) ឬ Environment Variables ក្នុង Vercel។','error')
         return render_template('register.html')
 
     try:
@@ -207,13 +207,13 @@ def register():
                 'password': hashed_password,
                 'role': 'admin'
             })
-            flash('គណនីអ្នកគ្រប់គ្រងត្រូវបានបង្កើតជោគជ័យ! Admin account created.')
+            flash('គណនីអ្នកគ្រប់គ្រងត្រូវបានបង្កើតជោគជ័យ! Admin account created.', 'success')
             return redirect(url_for('login'))
             
         except pymongo.errors.DuplicateKeyError:
             flash('ឈ្មោះអ្នកប្រើប្រាស់នេះមានរួចហើយ! Username already exists!')
         except Exception as e:
-            flash(f'មានបញ្ហាក្នុងការចុះឈ្មោះ: {e}')
+            flash(f'មានបញ្ហាក្នុងការចុះឈ្មោះ: {e}','error')
             
     return render_template('register.html')
 
@@ -224,7 +224,7 @@ def logout():
     if reason == 'inactivity':
         flash('លោកអ្នកត្រូវបានចាកចេញដោយសារគ្មានសកម្មភាព! You have been logged out due to inactivity!')
     else:
-        flash('បានចាកចេញពីគណនីដោយជោគជ័យ! Logged out successfully!')
+        flash('បានចាកចេញពីគណនីដោយជោគជ័យ! Logged out successfully!', 'success')
     return redirect(url_for('login'))
 
 @app.route('/admin', methods=['GET', 'POST'])
@@ -318,11 +318,11 @@ def create_user():
             'password': hashed_password,
             'role': role
         })
-        flash(f'គណនី "{username}" ត្រូវបានបង្កើតដោយជោគជ័យ! User "{username}" created successfully!')
+        flash(f'គណនី "{username}" ត្រូវបានបង្កើតដោយជោគជ័យ! User "{username}" created successfully!', 'success')
     except pymongo.errors.DuplicateKeyError:
         flash('ឈ្មោះអ្នកប្រើមានរួចហើយ! Username already exists!')
     except Exception as e:
-        flash(f'មានបញ្ហាក្នុងការបង្កើតគណនី: {e}')
+        flash(f'មានបញ្ហាក្នុងការបង្កើតគណនី: {e}','error')
         
     return redirect(url_for('admin'))
 
@@ -349,7 +349,7 @@ def delete_user(user_id):
         return redirect(url_for('admin'))
         
     db.users.delete_one({'_id': user_id})
-    flash(f'បានលុបអ្នកប្រើប្រាស់ "{user_to_delete["username"]}" ដោយជោគជ័យ! User "{user_to_delete["username"]}" deleted successfully!')
+    flash(f'បានលុបអ្នកប្រើប្រាស់ "{user_to_delete["username"]}" ដោយជោគជ័យ! User "{user_to_delete["username"]}" deleted successfully!', 'success')
     return redirect(url_for('admin'))
 
 @app.route('/admin/change_password/<int:user_id>', methods=['POST'])
@@ -374,10 +374,10 @@ def change_password(user_id):
     if new_password:
         hashed_password = generate_password_hash(new_password)
         db.users.update_one({'_id': user_id}, {'$set': {'password': hashed_password, 'role': role}})
-        flash(f'បានកែប្រែគណនី "{user["username"]}" ដោយជោគជ័យ! Account "{user["username"]}" updated successfully!')
+        flash(f'បានកែប្រែគណនី "{user["username"]}" ដោយជោគជ័យ! Account "{user["username"]}" updated successfully!', 'success')
     else:
         db.users.update_one({'_id': user_id}, {'$set': {'role': role}})
-        flash(f'បានកែប្រែសិទ្ធិគណនី "{user["username"]}" ដោយជោគជ័យ! Account permissions for "{user["username"]}" updated successfully!')
+        flash(f'បានកែប្រែសិទ្ធិគណនី "{user["username"]}" ដោយជោគជ័យ! Account permissions for "{user["username"]}" updated successfully!', 'success')
 
     return redirect(url_for('admin'))
 
@@ -470,7 +470,7 @@ def delete_image(image_id):
 def delete_post(post_id):
     db.post_images.delete_many({'post_id': post_id})
     db.posts.delete_one({'_id': post_id})
-    flash('Post deleted successfully!')
+    flash('Post deleted successfully!', 'success')
     return redirect(url_for('admin'))
 
 @app.route('/culture')

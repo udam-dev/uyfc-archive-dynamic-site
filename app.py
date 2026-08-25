@@ -440,9 +440,9 @@ def edit_post(post_id):
                         'image_filename': image_filename
                     })
                     
-            flash('Post updated successfully!')
+            flash('Post updated successfully!', 'success')
         except Exception as e:
-            flash(f'Error updating post: {e}')
+            flash(f'Error updating post: {e}','error')
             
         return redirect(url_for('admin'))
 
@@ -461,7 +461,7 @@ def delete_image(image_id):
     if img:
         post_id = img['post_id']
         db.post_images.delete_one({'_id': image_id})
-        flash('Image deleted successfully!')
+        flash('Image deleted successfully!', 'success')
         return redirect(url_for('edit_post', post_id=post_id))
     return redirect(url_for('admin'))
 

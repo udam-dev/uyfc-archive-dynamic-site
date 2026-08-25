@@ -145,16 +145,16 @@
         <h2>ប្រព័ន្ធគ្រប់គ្រងបណ្ណសារ</h2>
         <div class="subtitle">UYFC Archive Admin Portal</div>
 
-        <!-- Inside the HTML body -->
         {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                <ul class="flash-messages {% if messages[0][0] == 'error' %}error{% endif %}">
-                    {% for category, message in messages %}
-                        <li>{% if category == 'success' %}✅{% else %}⚠️{% endif %} {{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
+        {% if messages %}
+        <ul class="flashes {% if messages[0][0] == 'success' %}success{% endif %}">
+            {% for category, message in messages %}
+            <li>{% if category == 'success' %}✅{% else %}⚠️{% endif %} {{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
         {% endwith %}
+
         <form method="POST">
             <div class="form-group">
                 <label for="username">ឈ្មោះអ្នកប្រើប្រាស់ / Username:</label>
@@ -164,21 +164,26 @@
                 <label for="password">ពាក្យសម្ងាត់ / Password:</label>
                 <input type="password" id="password" name="password" placeholder="Enter password" required>
             </div>
+            <div style="text-align: right; margin-top: -10px; margin-bottom: 15px;">
+                <a href="{{ url_for('forgot_password') }}" style="color: #0b2545; font-size: 13px; text-decoration: none; font-weight: 600;">ភ្លេចពាក្យសម្ងាត់? / Forgot Password?</a>
+            </div>
             <button type="submit">ចូលប្រព័ន្ធ / Sign In</button>
         </form>
         
         <a href="{{ url_for('home') }}" class="back-btn">⬅️ ត្រឡប់ទៅទំព័រដើម / Back to Home</a>
     </div>
+
     <script>
-    // Hide flash messages after 5 seconds
-    setTimeout(function () {
-        var flashes = document.querySelectorAll('.flashes, .flash-messages');
-        flashes.forEach(function (flash) {
-            flash.style.transition = 'opacity 0.5s ease';
-            flash.style.opacity = '0';
-            setTimeout(() => flash.remove(), 500); // Waits for fade out, then removes
-        });
-    }, 5000);
-</script>
+        // Hide flash messages after 5 seconds
+        setTimeout(function() {
+            var flashes = document.querySelectorAll('.flashes, .flash-messages');
+            flashes.forEach(function(flash) {
+                flash.style.transition = 'opacity 0.5s ease';
+                flash.style.opacity = '0';
+                setTimeout(() => flash.remove(), 500);
+            });
+        }, 5000);
+    </script>
 </body>
+
 </html>

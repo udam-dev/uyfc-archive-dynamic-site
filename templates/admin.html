@@ -610,6 +610,146 @@
         .close-modal:hover {
             color: #ffffff;
         }
+
+        @media (max-width: 600px) {
+            .admin-container {
+                width: calc(100% - 24px);
+                padding: 22px 14px;
+                border-radius: 16px;
+            }
+
+            h1 {
+                font-size: 24px;
+                line-height: 1.35;
+                margin-bottom: 22px;
+            }
+
+            h2 {
+                font-size: 19px;
+                line-height: 1.4;
+            }
+
+            .user-nav-bar {
+                align-items: stretch;
+                flex-direction: column;
+                gap: 12px;
+                padding: 14px;
+                margin-bottom: 22px;
+            }
+
+            .logged-in-user {
+                line-height: 1.5;
+                overflow-wrap: anywhere;
+            }
+
+            #create-user-btn,
+            .logout-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100%;
+                margin: 0;
+                padding: 10px 12px;
+            }
+
+            .back-btn {
+                margin-bottom: 22px;
+            }
+
+            .flash-messages {
+                padding: 12px 14px;
+                margin-bottom: 22px;
+            }
+
+            input,
+            textarea,
+            select {
+                padding: 12px 14px;
+            }
+
+            input[type="file"] {
+                padding: 10px;
+            }
+
+            input[type="file"]::file-selector-button {
+                margin-right: 8px;
+                padding: 7px 10px;
+            }
+
+            .posts-list {
+                margin-top: 36px;
+                padding-top: 28px;
+            }
+
+            .post-item {
+                padding: 16px;
+                gap: 16px;
+            }
+
+            .post-item > div:first-child {
+                width: 100%;
+                min-width: 0 !important;
+            }
+
+            .post-item h3 {
+                font-size: 18px;
+            }
+
+            .post-date-badge {
+                margin-left: 0;
+                margin-top: 4px;
+            }
+
+            .post-actions,
+            .user-actions {
+                width: 100%;
+                justify-content: stretch;
+            }
+
+            .post-actions > *,
+            .user-actions > *,
+            .user-actions form {
+                flex: 1 1 0;
+                min-width: 0;
+            }
+
+            .edit-btn,
+            .delete-btn,
+            .change-pw-btn {
+                width: 100%;
+                padding: 10px 8px;
+            }
+
+            .post-actions form,
+            .user-actions form {
+                margin: 0;
+            }
+
+            .create-user-section {
+                padding: 22px 14px;
+                border-radius: 16px;
+            }
+
+            .user-item {
+                align-items: stretch;
+                padding: 14px;
+            }
+
+            .user-info {
+                align-items: flex-start;
+                flex-wrap: wrap;
+                line-height: 1.5;
+            }
+
+            .modal {
+                padding: 12px;
+            }
+
+            .modal-content {
+                padding: 26px 18px 20px;
+                border-radius: 16px;
+            }
+        }
     </style>
 </head>
 

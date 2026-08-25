@@ -1,8 +1,8 @@
 {
-  "rewrites": [
-    {
-      "source": "/((?!static/).*)",
-      "destination": "/api/index.py"
-    }
-  ]
+  "rewrites": [
+    { 
+      "source": "/(.*|admin|login|register|edit)", 
+      "destination": "/api/app.py"
+    }
+  ]
 }

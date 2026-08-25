@@ -1,7 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/:path*",
+      "source": "/((?!static/).*)",
       "destination": "/api/index.py"
     }
   ]

@@ -1,8 +1,8 @@
 {
-  "rewrites": [
-    { 
-      "source": "/(.*|admin|login|register|edit)", 
-      "destination": "/api/index"
-    }
-  ]
+  "rewrites": [
+    {
+      "source": "/((?!static/|css/|js/|.*\\.(?:css|js|png|jpg|jpeg|gif|svg|ico|wsgi)$).*)" ,
+      "destination": "/api/index"
+    }
+  ]
 }

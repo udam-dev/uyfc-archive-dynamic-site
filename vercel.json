@@ -2,8 +2,7 @@
   "rewrites": [
     { 
       "source": "/(.*|admin|login|register|edit)", 
-      "destination": "/api/index",
-      "permanent": true
+      "destination": "/api/index"
     }
   ]
 }

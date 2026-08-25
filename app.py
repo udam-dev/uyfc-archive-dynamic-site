@@ -13,7 +13,7 @@ from pymongo import MongoClient
 # Load environment variables
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../static', static_url_path='/static')
 app.secret_key = os.environ.get('SECRET_KEY')
 app.permanent_session_lifetime = timedelta(minutes=5)
 

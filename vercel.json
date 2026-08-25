@@ -2,7 +2,7 @@
   "rewrites": [
     { 
       "source": "/(.*|admin|login|register|edit)", 
-      "destination": "/api/app.py"
+      "destination": "/api/app"
     }
   ]
 }

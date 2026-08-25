@@ -1,7 +1,7 @@
 {
   "rewrites": [
     {
-      "source": "/((?!static/|css/|js/|.*\\.(?:css|js|png|jpg|jpeg|gif|svg|ico|wsgi)$).*)" ,
+      "source": "/((?!static/|css/|js/|.*\\.(?:css|js|png|jpg|jpeg|gif|svg|ico)$).*)" ,
       "destination": "/api/index"
     }
   ]

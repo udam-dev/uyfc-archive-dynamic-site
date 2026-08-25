@@ -1,8 +1,8 @@
 {
   "rewrites": [
-    { 
-      "source": "/(.*|admin|login|register|edit)", 
-      "destination": "/api/index"
+    {
+      "source": "/:path*",
+      "destination": "/api/index.py"
     }
   ]
 }

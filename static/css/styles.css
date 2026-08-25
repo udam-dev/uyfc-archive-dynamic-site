@@ -1142,15 +1142,3 @@ p {
   box-shadow: 0 6px 20px rgba(6, 157, 49, 0.45);
   filter: brightness(1.15);
 }
-
-/* Inside the <style> block */
-.flash-messages.error {
-    background: rgba(239, 68, 68, 0.1);
-    border-color: rgba(239, 68, 68, 0.25);
-    color: #ef4444; /* Red color */
-}
-.flashes.success {
-    background: rgba(16, 185, 129, 0.2);
-    border-color: rgba(16, 185, 129, 0.3);
-    color: #047857; /* Green color */
-}
